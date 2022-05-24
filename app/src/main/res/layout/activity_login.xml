@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical"
+    tools:context=".weihu">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="170dp"
+        android:gravity="center"
+        android:text="管理员登录"
+        android:textSize="65sp" />
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="260dp"
+        android:layout_marginRight="100dp"
+        android:hint="账号:"
+        android:textSize="50sp" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="360dp"
+        android:layout_marginRight="100dp"
+        android:drawablePadding="5dp"
+        android:hint="密码:"
+        android:inputType="textPassword"
+        android:textSize="50sp" />
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="250dp"
+        android:layout_height="80dp"
+        android:layout_below="@+id/password"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="50dp"
+        android:background="#03C699"
+        android:text="安全登录"
+        android:textSize="50sp" />
+</RelativeLayout>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical"
+    tools:context=".weihu">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="170dp"
+        android:gravity="center"
+        android:text="您已进入维护模式"
+        android:textSize="60dp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/distance_btn"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="200dp"
+            android:layout_marginTop="60dp"
+            android:background="#00c799"
+            android:text="距离传感器测试"
+            android:textSize="40sp" />
+
+        <TextView
+            android:id="@+id/distance_txt"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/distance_btn"
+            android:layout_marginLeft="200dp"
+            android:background="#CCCCCC"
+            android:hint="dis(mm)"
+            android:textSize="40sp" />
+
+
+        <Button
+            android:id="@+id/color_btn"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:background="#00c799"
+            android:layout_marginTop="60dp"
+            android:layout_toRightOf="@+id/distance_btn"
+            android:layout_marginLeft="100dp"
+            android:text="颜色传感器测试"
+            android:textSize="40sp"
+            />
+
+        <TextView
+            android:id="@+id/color_txt"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/distance_btn"
+            android:layout_marginLeft="100dp"
+            android:layout_toRightOf="@+id/distance_btn"
+            android:background="#CCCCCC"
+            android:hint="R:0|G:0|B:0"
+            android:textSize="40sp"/>
+
+        <Button
+            android:id="@+id/servo_btn_1"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/distance_btn"
+            android:layout_marginLeft="200dp"
+            android:layout_marginTop="100dp"
+            android:background="#00c799"
+            android:text="舵机组1测试"
+            android:textSize="40sp" />
+
+        <Button
+            android:id="@+id/servo_btn_2"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/color_btn"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="100dp"
+            android:layout_toRightOf="@+id/servo_btn_1"
+            android:background="#00c799"
+            android:text="舵机组2测试"
+            android:textSize="40sp" />
+
+
+
+        <Button
+            android:id="@+id/servo_btn_3"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/servo_btn_1"
+            android:layout_marginTop="100dp"
+            android:layout_marginLeft="200dp"
+            android:background="#00c799"
+            android:text="舵机组3测试"
+            android:textSize="40sp" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="950dp"
+        android:background="#ffb87e"
+        android:text="退出维护模式"
+        android:textSize="45sp"
+        />
+</LinearLayout>
