@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         //关闭串口
         com.friendlyarm.FriendlyThings.HardwareControler.close(devfd);
 /*      
-        加了个显示时间的 看情况吧
+        加了个显示时间的 看情况吧 之后加不加再说 咩咩！
         Calendar calendar = Calendar.getInstance();
         //获取系统的日期
         //年
