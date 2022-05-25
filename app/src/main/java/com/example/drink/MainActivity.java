@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     String  fenda_str = "3" ;//芬达发送的字符串
     String  init_str  = "b" ;//初始化发送的字符串
     String  success_init_str = "c";//初始化成功响应字符串
+    int Locked = 1;
 
 
     private Handler handler = new Handler() {
@@ -77,12 +78,10 @@ public class MainActivity extends AppCompatActivity {
                         int retSize = HardwareControler.read(devfd, buf, BUFSIZE);    //读取数据；要读取的数据都是返回值，一般返回值都是函数运行结果的状态
 
                         if (retSize > 0) {
-                            String str = new String(buf, 0, retSize);
-                            //对传来的值进行判断
-                            //串口开启
-                            devfd = com.friendlyarm.FriendlyThings.HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
-
                             String str1 = new String(buf, 0, retSize);
+                            //对传来的值进行判断
+
+
                             //在这写收到的判断
                             if( str1.equals("5")){
                                 Toast.makeText( MainActivity.this,"已进入工作范围，请操作", Toast.LENGTH_SHORT).show();
@@ -90,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
                                 //串口写c 详见编码.pdf
                                 HardwareControler.write(devfd, success_init_str.getBytes());
                                 String ChoosingText = "请选择饮料";
+                                Locked = 0;
                                 ChoseText.setText(ChoosingText);
                             }
 
@@ -152,42 +152,59 @@ public class MainActivity extends AppCompatActivity {
         KeleButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //串口开启
-                devfd = com.friendlyarm.FriendlyThings.HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
-                //串口写1
-                HardwareControler.write(devfd, kele_str.getBytes());
-                Intent intent = new Intent(MainActivity.this, color.class);
-                startActivity(intent);
-                //关闭串口
-                com.friendlyarm.FriendlyThings.HardwareControler.close(devfd);
+                if(Locked == 0){
+                    //串口开启
+                    devfd = com.friendlyarm.FriendlyThings.HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
+                    //串口写1
+                    HardwareControler.write(devfd, kele_str.getBytes());
+                    Intent intent = new Intent(MainActivity.this, color.class);
+                    startActivity(intent);
+                    //关闭串口
+                    com.friendlyarm.FriendlyThings.HardwareControler.close(devfd);
+                }
+                else{
+                    Toast.makeText( MainActivity.this,"请先进入工作范围", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         //雪碧btn
         XuebiButton .setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //串口开启
-                devfd = com.friendlyarm.FriendlyThings.HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
-                //串口写2
-                HardwareControler.write(devfd, xuebi_str.getBytes());
-                Intent intent = new Intent(MainActivity.this, color.class);
-                startActivity(intent);
-                //关闭串口
-                com.friendlyarm.FriendlyThings.HardwareControler.close(devfd);
+                if(Locked == 0){
+                    //串口开启
+                    devfd = com.friendlyarm.FriendlyThings.HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
+                    //串口写2
+                    HardwareControler.write(devfd, xuebi_str.getBytes());
+                    Intent intent = new Intent(MainActivity.this, color.class);
+                    startActivity(intent);
+                    //关闭串口
+                    com.friendlyarm.FriendlyThings.HardwareControler.close(devfd);
+                }
+                else{
+                    Toast.makeText( MainActivity.this,"请先进入工作范围", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
         //芬达btn
         FendaButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //串口开启
-                devfd = com.friendlyarm.FriendlyThings.HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
-                //串口写3
-                HardwareControler.write(devfd, fenda_str.getBytes());
-                Intent intent = new Intent(MainActivity.this, color.class);
-                startActivity(intent);
-                //关闭串口
-                com.friendlyarm.FriendlyThings.HardwareControler.close(devfd);
+                if(Locked == 0){
+                    //串口开启
+                    devfd = com.friendlyarm.FriendlyThings.HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
+                    //串口写3
+                    HardwareControler.write(devfd, fenda_str.getBytes());
+                    Intent intent = new Intent(MainActivity.this, color.class);
+                    startActivity(intent);
+                    //关闭串口
+                    com.friendlyarm.FriendlyThings.HardwareControler.close(devfd);
+                }
+                else{
+                    Toast.makeText( MainActivity.this,"请先进入工作范围", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
