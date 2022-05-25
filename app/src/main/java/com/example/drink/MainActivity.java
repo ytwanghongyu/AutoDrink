@@ -45,6 +45,20 @@ public class MainActivity extends AppCompatActivity {
     private int dataBits = 8;
     private int stopBits = 1;
     private int devfd = -1;
+    private final int BUFSIZE = 512;
+    private byte[] buf = new byte[BUFSIZE];
+
+    private Timer timer = new Timer();
+
+    private TimerTask task = new TimerTask() {
+        public void run() {
+            Message message = new Message();
+            message.what = 1;
+            handler.sendMessage(message);
+        }
+    };
+
+
 
     private TextView test_text;
 
@@ -55,11 +69,37 @@ public class MainActivity extends AppCompatActivity {
     String  success_init_str = "c";//初始化成功响应字符串
 
 
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    if (HardwareControler.select(devfd, 0, 0) == 1) {       //判断是否有数据可读
+                        int retSize = HardwareControler.read(devfd, buf, BUFSIZE);    //读取数据；要读取的数据都是返回值，一般返回值都是函数运行结果的状态
 
-    private final int BUFSIZE = 512;
-    private byte[] buf = new byte[BUFSIZE];
-    private Timer timer = new Timer();
+                        if (retSize > 0) {
+                            String str = new String(buf, 0, retSize);
+                            //对传来的值进行判断
+                            //串口开启
+                            devfd = com.friendlyarm.FriendlyThings.HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
 
+                            String str1 = new String(buf, 0, retSize);
+                            //在这写收到的判断
+                            if( str1.equals("5")){
+                                Toast.makeText( MainActivity.this,"已进入工作范围，请操作", Toast.LENGTH_SHORT).show();
+                                //向MCU发送初始化成功响应
+                                //串口写c 详见编码.pdf
+                                HardwareControler.write(devfd, success_init_str.getBytes());
+                                String ChoosingText = "请选择饮料";
+                                ChoseText.setText(ChoosingText);
+                            }
+
+                        }
+                    }
+                    break;
+            }
+            super.handleMessage(msg); // 帮助处理信息的一个类
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,35 +116,23 @@ public class MainActivity extends AppCompatActivity {
         ChoseText   =findViewById(R.id.chose_txt);
 
 
-        
+        String WarningText = "请靠近至10cm内";
+        ChoseText.setText(WarningText);
         
         //向MCU发送初始化请求
         //串口开启
         devfd = com.friendlyarm.FriendlyThings.HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
         //串口写b 详见编码.pdf
         HardwareControler.write(devfd, init_str.getBytes());
-        //关闭串口
-        com.friendlyarm.FriendlyThings.HardwareControler.close(devfd);
-/*      
-        加了个显示时间的
-        Calendar calendar = Calendar.getInstance();
-        //获取系统的日期
-        //年
-        int year = calendar.get(Calendar.YEAR);
-        //月
-        int month = calendar.get(Calendar.MONTH)+1;
-        //日
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        //获取系统时间
-        //小时
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        //分钟
-        int minute = calendar.get(Calendar.MINUTE);
-        //秒
-        int second = calendar.get(Calendar.SECOND);
-        time2.setText("Calendar获取当前日期"+year+"年"+month+"月"+day+"日"+hour+":"+minute+":"+second);
- */
 
+
+        // 设备是否开启判别
+        if (devfd >= 0) {
+            timer.schedule(task, 0, 500);
+        } else {
+            devfd = -1;
+            Toast.makeText(MainActivity.this,"Failed  to  open....",Toast.LENGTH_LONG).show();
+        }
 
 
 
@@ -162,31 +190,7 @@ public class MainActivity extends AppCompatActivity {
                 com.friendlyarm.FriendlyThings.HardwareControler.close(devfd);
             }
         });
-        //死循环，进入10cm才能工作
-        boolean unWorkPermission = true;
-        //串口开启
-        devfd = com.friendlyarm.FriendlyThings.HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
-        while(unWorkPermission){
 
-            String WarningText = "请靠近至10cm内";
-            ChoseText.setText(WarningText);
-            if (HardwareControler.select(devfd, 0, 0) == 1) {       //判断是否有数据可读
-                int retSize = HardwareControler.read(devfd, buf, BUFSIZE);    //读取数据（设置大，主要是保证读取完毕吧）；要读取的数据都是返回值，一般返回值都是函数运行结果的状态
-                if (retSize > 0) {
-                    String str = new String(buf, 0, retSize);
-                    //在这写收到的判断
-                    if( str.equals("5")){
-                        unWorkPermission = false;
-                        Toast.makeText( MainActivity.this,"已进入工作范围，请操作", Toast.LENGTH_SHORT).show();
-                        //向MCU发送初始化成功响应
-                        //串口写c 详见编码.pdf
-                        HardwareControler.write(devfd, success_init_str.getBytes());
-                        //关闭串口
-                        com.friendlyarm.FriendlyThings.HardwareControler.close(devfd);
-                    }
-                }
-            }
-        }
 
 
     }

@@ -65,34 +65,6 @@ public class color extends AppCompatActivity {
                                 //返回主界面
                                 Intent intent = new Intent(color.this, MainActivity.class);
                             }
-
-                            //雪碧
-                            else if(str.equals("2")){
-                                //提示成功
-                                Toast.makeText( color.this,"成功识别，正在推出雪碧，请稍候...", Toast.LENGTH_SHORT).show();
-                                //延时1秒
-                                try {
-                                    Thread.sleep(1000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                //返回主界面
-                                Intent intent = new Intent(color.this, MainActivity.class);
-                            }
-
-                            //芬达
-                            else if(str.equals("3")){
-                                //提示成功
-                                Toast.makeText( color.this,"成功识别，正在推出芬达，请稍候...", Toast.LENGTH_SHORT).show();
-                                //延时1秒
-                                try {
-                                    Thread.sleep(1000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                //返回主界面
-                                Intent intent = new Intent(color.this, MainActivity.class);
-                            }
                         }
                     }
                     break;
@@ -110,8 +82,6 @@ public class color extends AppCompatActivity {
 
         //串口开启
         devfd = HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
-        //串口读
-        HardwareControler.read(devfd, buf, BUFSIZE);
 
         if (devfd >= 0) {
             timer.schedule(task, 0, 100);
