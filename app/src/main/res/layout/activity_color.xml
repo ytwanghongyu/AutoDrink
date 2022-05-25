@@ -23,7 +23,7 @@
         android:layout_marginTop="90dp"
         android:layout_marginLeft="1000dp"
         android:background="#ffb87e"
-        android:text="<-返回"
+        android:text="返回"
         android:textSize="60dp"
         />
     <ScrollView
