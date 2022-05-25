@@ -32,11 +32,75 @@ public class weihu extends AppCompatActivity {
     private int stopBits = 1;
     private int devfd = -1;
 
-    private Timer timer = new Timer();
+    private  int state = 0;
+
     private final int BUFSIZE = 512;
     private byte[] buf = new byte[BUFSIZE];
 
-    
+    private Timer timer = new Timer();
+
+    private TimerTask task = new TimerTask() {
+        public void run() {
+            Message message = new Message();
+            message.what = 1;
+            handler.sendMessage(message);
+        }
+    };
+
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    if (com.friendlyarm.FriendlyThings.HardwareControler.select(devfd, 0, 0) == 1) {       //判断是否有数据可读
+                        int retSize = com.friendlyarm.FriendlyThings.HardwareControler.read(devfd, buf, BUFSIZE);    //读取数据；要读取的数据都是返回值，一般返回值都是函数运行结果的状态
+
+                        if (retSize > 0) {
+                            String str1 = new String(buf, 0, retSize);
+                            //对传来的值进行判断
+                            if(state == 0){
+                                break;
+
+                            }
+                            else if (state == 1){
+                                //获取字符串
+                                String str_get = new String(buf, 0, retSize);
+                                //str_decode:解码后的str
+                                char[] str_dcd = new char[3];
+                                //解码
+                                str_get.getChars(2,5,str_dcd,0);
+                                //char 转 string
+                                String str_dis = String.valueOf(str_dcd);
+                                str_dis = str_dis + "mm";
+                                //显示
+                                DistanceText.setText(str_dis);
+                            }
+                            else if (state == 2){
+                                //获取字符串
+                                String str_get = new String(buf, 0, retSize);
+                                //str_decode:解码后的str
+                                char[] str_dcdR = new char[3];
+                                char[] str_dcdG = new char[3];
+                                char[] str_dcdB = new char[3];
+                                //解码
+                                str_get.getChars(2,5,str_dcdR,0);
+                                str_get.getChars(5,8,str_dcdG,0);
+                                str_get.getChars(8,11,str_dcdB,0);
+                                //char 转 string
+                                String str_disR = String.valueOf(str_dcdR);
+                                String str_disG = String.valueOf(str_dcdG);
+                                String str_disB = String.valueOf(str_dcdB);
+                                String str_disRGB = "R:" + str_disR + " | G:" + str_disG + " | B:" + str_disB;
+                                //显示
+                                ColorText.setText(str_disRGB);
+                            }
+                        }
+                    }
+                    break;
+            }
+            super.handleMessage(msg); // 帮助处理信息的一个类
+        }
+    };
+
 
     String  DistanceSendStr  = "6" ;//距离传感器测试发送的字符串
     String  ColorSendStr     = "7";//颜色传感器测试发送的字符串
@@ -58,7 +122,8 @@ public class weihu extends AppCompatActivity {
         DistanceText    =   findViewById(R.id.  distance_txt  );
         ColorText       =   findViewById(R.id.  color_txt     );
 
-
+        //串口开启
+        devfd = com.friendlyarm.FriendlyThings.HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
         exit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -68,10 +133,21 @@ public class weihu extends AppCompatActivity {
             }
         });
 
+        // 设备是否开启判别
+        if (devfd >= 0) {
+            timer.schedule(task, 0, 500);
+        } else {
+            devfd = -1;
+            Toast.makeText(weihu.this,"Failed  to  open....",Toast.LENGTH_LONG).show();
+        }
+
+
         //距离传感器测试btn
         DistanceButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                //串口开启
+                devfd = com.friendlyarm.FriendlyThings.HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
                 //补换行符\n
                 String str = DistanceSendStr;
                 if (str.charAt(str.length()-1) != '\n') {
@@ -80,30 +156,11 @@ public class weihu extends AppCompatActivity {
                 //串口写
                 int ret= com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str.getBytes());
                 if(ret>0){
-                    DistanceText.setText("waiting for data...");
-                    while(true){
-                            //判断是否有数据可读
-                        if (com.friendlyarm.FriendlyThings.HardwareControler.select(devfd, 0, 0) == 1) {
-                            //串口开启
-                            devfd = com.friendlyarm.FriendlyThings.HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
-                            //串口接收
-                            int retSize = com.friendlyarm.FriendlyThings.HardwareControler.read(devfd, buf, BUFSIZE);
-                            //获取字符串
-                            String str_get = new String(buf, 0, retSize);
-                            //str_decode:解码后的str
-                            char[] str_dcd = new char[3];
-                            //解码
-                            str_get.getChars(2,5,str_dcd,0);
-                            //char 转 string
-                            String str_dis = String.valueOf(str_dcd);
-                            str_dis = str_dis + "mm";
-                            //显示
-                            DistanceText.setText(str_dis);
-                            //关闭串口
-                            com.friendlyarm.FriendlyThings.HardwareControler.close(devfd);
-                            break;
-                        }
-                    }
+                    DistanceText.setText("等待数据传输...");
+                    state = 1;
+                }
+                else {
+                    DistanceText.setText("串口发送失败");
                 }
             }
         });
@@ -112,6 +169,8 @@ public class weihu extends AppCompatActivity {
         ColorButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                //串口开启
+                devfd = com.friendlyarm.FriendlyThings.HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
                 //补换行符\n
                 String str = ColorSendStr;
                 if (str.charAt(str.length()-1) != '\n') {
@@ -120,36 +179,11 @@ public class weihu extends AppCompatActivity {
                 //串口写
                 int ret= com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str.getBytes());
                 if(ret>0){
-                    DistanceText.setText("waiting for data...");
-                    while(true){
-                        //判断是否有数据可读
-                        if (com.friendlyarm.FriendlyThings.HardwareControler.select(devfd, 0, 0) == 1) {
-                            //串口开启
-                            devfd = com.friendlyarm.FriendlyThings.HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
-                            //串口接收
-                            int retSize = com.friendlyarm.FriendlyThings.HardwareControler.read(devfd, buf, BUFSIZE);
-                            //获取字符串
-                            String str_get = new String(buf, 0, retSize);
-                            //str_decode:解码后的str
-                            char[] str_dcdR = new char[3];
-                            char[] str_dcdG = new char[3];
-                            char[] str_dcdB = new char[3];
-                            //解码
-                            str_get.getChars(2,5,str_dcdR,0);
-                            str_get.getChars(5,8,str_dcdG,0);
-                            str_get.getChars(8,11,str_dcdB,0);
-                            //char 转 string
-                            String str_disR = String.valueOf(str_dcdR);
-                            String str_disG = String.valueOf(str_dcdG);
-                            String str_disB = String.valueOf(str_dcdB);
-                            String str_disRGB = "R:" + str_disR + "|G:" + str_disG + "|B:" + str_disB;
-                            //显示
-                            DistanceText.setText(str_disRGB);
-                            //关闭串口
-                            com.friendlyarm.FriendlyThings.HardwareControler.close(devfd);
-                            break;
-                        }
-                    }
+                    ColorText.setText("等待数据传输...");
+                    state = 2;
+                }
+                else {
+                    ColorText.setText("串口发送失败");
                 }
             }
         });
@@ -158,6 +192,8 @@ public class weihu extends AppCompatActivity {
         ServoButton1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                //关闭其他测试
+                state   =   0;
                 //串口开启
                 devfd = com.friendlyarm.FriendlyThings.HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
                 //补换行符\n
@@ -167,8 +203,6 @@ public class weihu extends AppCompatActivity {
                 }
                 //串口写
                 com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str .getBytes());
-                //关闭串口
-                com.friendlyarm.FriendlyThings.HardwareControler.close(devfd);
             }
         });
 
@@ -176,6 +210,8 @@ public class weihu extends AppCompatActivity {
         ServoButton2.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                //关闭其他测试
+                state   =   0;
                 //串口开启
                 devfd = com.friendlyarm.FriendlyThings.HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
                 //补换行符\n
@@ -185,8 +221,6 @@ public class weihu extends AppCompatActivity {
                 }
                 //串口写
                 com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str .getBytes());
-                //关闭串口
-                com.friendlyarm.FriendlyThings.HardwareControler.close(devfd);
             }
         });
 
@@ -194,6 +228,8 @@ public class weihu extends AppCompatActivity {
         ServoButton3.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                //关闭其他测试
+                state   =   0;
                 //串口开启
                 devfd = com.friendlyarm.FriendlyThings.HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
                 //补换行符\n
@@ -203,8 +239,6 @@ public class weihu extends AppCompatActivity {
                 }
                 //串口写
                 com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str .getBytes());
-                //关闭串口
-                com.friendlyarm.FriendlyThings.HardwareControler.close(devfd);
             }
         });
     }
