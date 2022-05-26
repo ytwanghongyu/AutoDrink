@@ -86,8 +86,15 @@ public class MainActivity extends AppCompatActivity {
                             if( str1.equals("5")){
                                 Toast.makeText( MainActivity.this,"已进入工作范围，请操作", Toast.LENGTH_SHORT).show();
                                 //向MCU发送初始化成功响应
+                                //补换行符\n
+                                String str = success_init_str;
+                                if (str.charAt(str.length()-1) != '\n') {
+                                    str = str + "\n";
+                                }
                                 //串口写c 详见编码.pdf
-                                HardwareControler.write(devfd, success_init_str.getBytes());
+                                HardwareControler.write(devfd, str.getBytes());
+                                //串口写c 详见编码.pdf
+                                HardwareControler.write(devfd, str.getBytes());
                                 String ChoosingText = "请选择饮料";
                                 Locked = 0;
                                 ChoseText.setText(ChoosingText);
@@ -118,12 +125,17 @@ public class MainActivity extends AppCompatActivity {
 
         String WarningText = "请靠近至10cm内";
         ChoseText.setText(WarningText);
-        
+
         //向MCU发送初始化请求
         //串口开启
         devfd = com.friendlyarm.FriendlyThings.HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
+        //补换行符\n
+        String str = init_str;
+        if (str.charAt(str.length()-1) != '\n') {
+            str = str + "\n";
+        }
         //串口写b 详见编码.pdf
-        HardwareControler.write(devfd, init_str.getBytes());
+        HardwareControler.write(devfd, str.getBytes());
 
 
         // 设备是否开启判别
@@ -155,8 +167,16 @@ public class MainActivity extends AppCompatActivity {
                 if(Locked == 0){
                     //串口开启
                     devfd = com.friendlyarm.FriendlyThings.HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
+                    //补换行符\n
+                    String str = kele_str;
+                    if (str.charAt(str.length()-1) != '\n') {
+                        str = str + "\n";
+                    }
                     //串口写1
-                    HardwareControler.write(devfd, kele_str.getBytes());
+                    HardwareControler.write(devfd, str.getBytes());
+                    //串口写1
+                    HardwareControler.write(devfd, str.getBytes());
+
                     Intent intent = new Intent(MainActivity.this, color.class);
                     startActivity(intent);
                     //关闭串口
@@ -174,8 +194,16 @@ public class MainActivity extends AppCompatActivity {
                 if(Locked == 0){
                     //串口开启
                     devfd = com.friendlyarm.FriendlyThings.HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
+                    //补换行符\n
+                    String str = xuebi_str;
+                    if (str.charAt(str.length()-1) != '\n') {
+                        str = str + "\n";
+                    }
                     //串口写2
-                    HardwareControler.write(devfd, xuebi_str.getBytes());
+                    HardwareControler.write(devfd,str .getBytes());
+                    //串口写2
+                    HardwareControler.write(devfd,str .getBytes());
+
                     Intent intent = new Intent(MainActivity.this, color.class);
                     startActivity(intent);
                     //关闭串口
@@ -194,8 +222,16 @@ public class MainActivity extends AppCompatActivity {
                 if(Locked == 0){
                     //串口开启
                     devfd = com.friendlyarm.FriendlyThings.HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
+                    //补换行符\n
+                    String str = fenda_str;
+                    if (str.charAt(str.length()-1) != '\n') {
+                        str = str + "\n";
+                    }
                     //串口写3
-                    HardwareControler.write(devfd, fenda_str.getBytes());
+                    HardwareControler.write(devfd, str.getBytes());
+                    //串口写3
+                    HardwareControler.write(devfd, str.getBytes());
+
                     Intent intent = new Intent(MainActivity.this, color.class);
                     startActivity(intent);
                     //关闭串口

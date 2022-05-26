@@ -155,6 +155,8 @@ public class weihu extends AppCompatActivity {
                 }
                 //串口写
                 int ret= com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str.getBytes());
+                //串口写
+                com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str.getBytes());
                 if(ret>0){
                     DistanceText.setText("等待数据传输...");
                     state = 1;
@@ -178,6 +180,8 @@ public class weihu extends AppCompatActivity {
                 }
                 //串口写
                 int ret= com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str.getBytes());
+                //串口写
+                com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str.getBytes());
                 if(ret>0){
                     ColorText.setText("等待数据传输...");
                     state = 2;
@@ -205,6 +209,8 @@ public class weihu extends AppCompatActivity {
                 }
                 //串口写
                 com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str .getBytes());
+                //串口写
+                com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str.getBytes());
             }
         });
 
@@ -223,6 +229,8 @@ public class weihu extends AppCompatActivity {
                 }
                 //串口写
                 com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str .getBytes());
+                //串口写
+                com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str.getBytes());
             }
         });
 
@@ -241,6 +249,8 @@ public class weihu extends AppCompatActivity {
                 }
                 //串口写
                 com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str .getBytes());
+                //串口写
+                com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str.getBytes());
             }
         });
     }
