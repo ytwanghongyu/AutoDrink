@@ -50,8 +50,6 @@ public class color extends AppCompatActivity {
                         if (retSize > 0) {
                             String str = new String(buf, 0, retSize);
                             //对传来的值进行判断
-                            
-
                             //可乐
                             if( str.equals("1")){
                                 //提示成功
@@ -65,6 +63,33 @@ public class color extends AppCompatActivity {
                                 //返回主界面
                                 Intent intent = new Intent(color.this, MainActivity.class);
                             }
+                            //雪碧
+                            if( str.equals("2")){
+                                //提示成功
+                                Toast.makeText( color.this,"成功识别，正在推出雪碧，请稍候...", Toast.LENGTH_SHORT).show();
+                                //延时1秒
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                //返回主界面
+                                Intent intent = new Intent(color.this, MainActivity.class);
+                            }
+                            //芬达
+                            if( str.equals("3")){
+                                //提示成功
+                                Toast.makeText( color.this,"成功识别，正在推出芬达，请稍候...", Toast.LENGTH_SHORT).show();
+                                //延时1秒
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                //返回主界面
+                                Intent intent = new Intent(color.this, MainActivity.class);
+                            }
+
                         }
                     }
                     break;
@@ -79,7 +104,7 @@ public class color extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_color);
-
+        //关闭其他页面
         if(MainActivity.instance!=null){
             MainActivity.instance.finish();
         }
@@ -99,6 +124,7 @@ public class color extends AppCompatActivity {
         //串口开启
         devfd = HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
 
+        //开启计时器任务
         if (devfd >= 0) {
             timer.schedule(task, 0, 100);
         } else {
@@ -108,20 +134,12 @@ public class color extends AppCompatActivity {
 
         //返回键
         exit1=findViewById(R.id.exit1);
-
         exit1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(color.this, MainActivity.class);
                 startActivity(intent);
-
             }
-
-
-
-
-
         });
     }
 }

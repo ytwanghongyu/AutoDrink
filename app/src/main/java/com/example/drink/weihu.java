@@ -112,7 +112,7 @@ public class weihu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weihu);
-
+        //关闭其他页面
         if(MainActivity.instance!=null){
             MainActivity.instance.finish();
         }

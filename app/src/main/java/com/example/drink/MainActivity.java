@@ -1,5 +1,10 @@
 package com.example.drink;
-
+/*
+* 说明：
+* 该程序稳定性较差，每次运行需要resetF411
+* 通信编码见 自动饮料机编码.pdf
+* 代码更新下载：https://github.com/ytwanghongyu/AutoDrink
+* */
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,18 +43,16 @@ public class MainActivity extends AppCompatActivity {
     private Button XuebiButton;
     private Button FendaButton;
     private TextView ChoseText;
-
     // NanoPC-T4 UART4
     private String devName = "/dev/ttyAMA3";//ttyAMA3 UART3
     private int speed = 115200;
     private int dataBits = 8;
     private int stopBits = 1;
     private int devfd = -1;
+
     private final int BUFSIZE = 512;
     private byte[] buf = new byte[BUFSIZE];
-
     private Timer timer = new Timer();
-
     private TimerTask task = new TimerTask() {
         public void run() {
             Message message = new Message();
@@ -57,8 +60,6 @@ public class MainActivity extends AppCompatActivity {
             handler.sendMessage(message);
         }
     };
-
-
 
     private TextView test_text;
 
@@ -79,9 +80,6 @@ public class MainActivity extends AppCompatActivity {
 
                         if (retSize > 0) {
                             String str1 = new String(buf, 0, retSize);
-                            //对传来的值进行判断
-
-
                             //在这写收到的判断
                             if( str1.equals("5")){
                                 Toast.makeText( MainActivity.this,"已进入工作范围，请操作", Toast.LENGTH_SHORT).show();
@@ -99,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
                                 Locked = 0;
                                 ChoseText.setText(ChoosingText);
                             }
-
                         }
                     }
                     break;
@@ -115,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        //关闭其他页面
         if(color.instance!=null){
             color.instance.finish();
         }
@@ -130,8 +127,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        //串口开启
-        devfd = HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
+
         //按钮Id | ButtonId
         ModeButton  =findViewById(R.id.mode_btn );
         XuebiButton =findViewById(R.id.xuebi_btn);
@@ -142,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
 
         String WarningText = "请靠近至10cm内";
         ChoseText.setText(WarningText);
-
         //向MCU发送初始化请求
         //串口开启
         devfd = com.friendlyarm.FriendlyThings.HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
@@ -162,11 +157,6 @@ public class MainActivity extends AppCompatActivity {
             devfd = -1;
             Toast.makeText(MainActivity.this,"Failed  to  open....",Toast.LENGTH_LONG).show();
         }
-
-
-
-
-
 
 
         //维护模式btn
@@ -193,7 +183,6 @@ public class MainActivity extends AppCompatActivity {
                     HardwareControler.write(devfd, str.getBytes());
                     //串口写1
                     //HardwareControler.write(devfd, str.getBytes());
-
                     Intent intent = new Intent(MainActivity.this, color.class);
                     startActivity(intent);
                     //关闭串口
@@ -220,7 +209,6 @@ public class MainActivity extends AppCompatActivity {
                     HardwareControler.write(devfd,str .getBytes());
                     //串口写2
                     //HardwareControler.write(devfd,str .getBytes());
-
                     Intent intent = new Intent(MainActivity.this, color.class);
                     startActivity(intent);
                     //关闭串口
@@ -248,7 +236,6 @@ public class MainActivity extends AppCompatActivity {
                     HardwareControler.write(devfd, str.getBytes());
                     //串口写3
                     //HardwareControler.write(devfd, str.getBytes());
-
                     Intent intent = new Intent(MainActivity.this, color.class);
                     startActivity(intent);
                     //关闭串口
@@ -260,8 +247,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
 
     }
 }

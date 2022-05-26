@@ -19,6 +19,7 @@ public class login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //关闭其他页面
         if(MainActivity.instance!=null){
             MainActivity.instance.finish();
         }
@@ -41,8 +42,8 @@ public class login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //这是能够登录的账号密码
-                String Usename = "ad";
-                String Upwd = "ad";
+                String Usename = "admin";
+                String Upwd = "admin";
 
                 //创建两个String类，储存从输入文本框获取到的内容
                 String user = name.getText().toString().trim();
