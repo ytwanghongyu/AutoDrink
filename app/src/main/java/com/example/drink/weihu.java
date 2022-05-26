@@ -73,6 +73,7 @@ public class weihu extends AppCompatActivity {
                                 str_dis = str_dis + "mm";
                                 //显示
                                 DistanceText.setText(str_dis);
+                                state = 0;
                             }
                             else if (state == 2){
                                 //获取字符串
@@ -92,6 +93,7 @@ public class weihu extends AppCompatActivity {
                                 String str_disRGB = "R:" + str_disR + " | G:" + str_disG + " | B:" + str_disB;
                                 //显示
                                 ColorText.setText(str_disRGB);
+                                state = 0;
                             }
                         }
                     }

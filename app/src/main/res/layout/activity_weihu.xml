@@ -44,13 +44,12 @@
             android:id="@+id/color_btn"
             android:layout_width="400dp"
             android:layout_height="wrap_content"
-            android:background="#00c799"
+            android:layout_marginLeft="100dp"
             android:layout_marginTop="60dp"
             android:layout_toRightOf="@+id/distance_btn"
-            android:layout_marginLeft="100dp"
+            android:background="#00c799"
             android:text="颜色传感器测试"
-            android:textSize="40sp"
-            />
+            android:textSize="40sp" />
 
         <TextView
             android:id="@+id/color_txt"
@@ -58,10 +57,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/distance_btn"
             android:layout_marginLeft="100dp"
+            android:layout_marginTop="2dp"
             android:layout_toRightOf="@+id/distance_btn"
             android:background="#CCCCCC"
             android:hint="R:0|G:0|B:0"
-            android:textSize="40sp"/>
+            android:textSize="40sp" />
 
         <Button
             android:id="@+id/servo_btn_1"
