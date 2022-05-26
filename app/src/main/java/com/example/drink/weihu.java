@@ -143,7 +143,6 @@ public class weihu extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(weihu.this, MainActivity.class);
                 startActivity(intent);
-
             }
         });
 
