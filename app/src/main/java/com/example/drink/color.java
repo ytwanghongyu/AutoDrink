@@ -72,11 +72,27 @@ public class color extends AppCompatActivity {
             super.handleMessage(msg); // 帮助处理信息的一个类
         }
     };
+    public static color instance = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_color);
+
+        if(MainActivity.instance!=null){
+            MainActivity.instance.finish();
+        }
+        if(login.instance!=null){
+            login.instance.finish();
+        }
+        if(warning.instance!=null){
+            warning.instance.finish();
+        }
+        if(weihu.instance!=null){
+            weihu.instance.finish();
+        }
+
 
         int retSize = HardwareControler.read(devfd, buf, BUFSIZE);
 

@@ -14,9 +14,24 @@ public class login extends AppCompatActivity {
 
     EditText name;  //创建账号
     EditText passwd;  //创建密码
+    public static login instance = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(MainActivity.instance!=null){
+            MainActivity.instance.finish();
+        }
+        if(color.instance!=null){
+            color.instance.finish();
+        }
+        if(warning.instance!=null){
+            warning.instance.finish();
+        }
+        if(weihu.instance!=null){
+            weihu.instance.finish();
+        }
+
         setContentView(R.layout.activity_login);
         login=findViewById(R.id.login);
 
@@ -42,9 +57,6 @@ public class login extends AppCompatActivity {
                 else{
                     Toast.makeText(login.this, "身份验证错误，禁止访问", Toast.LENGTH_SHORT).show();
                 }
-
-                Intent intent = new Intent(login.this, weihu.class);
-                startActivity(intent);
             }
         });
     }

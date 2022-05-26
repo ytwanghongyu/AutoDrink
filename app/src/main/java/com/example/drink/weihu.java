@@ -107,11 +107,25 @@ public class weihu extends AppCompatActivity {
     String  ServoSendStr1    = "8";//舵机1测试发送的字符串
     String  ServoSendStr2    = "9";//舵机2测试发送的字符串
     String  ServoSendStr3    = "a";//舵机3测试发送的字符串
-
+    public static weihu instance = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weihu);
+
+        if(MainActivity.instance!=null){
+            MainActivity.instance.finish();
+        }
+        if(color.instance!=null){
+            color.instance.finish();
+        }
+        if(login.instance!=null){
+            login.instance.finish();
+        }
+        if(warning.instance!=null){
+            warning.instance.finish();
+        }
+
         exit=findViewById(R.id.exit);
         DistanceButton  =   findViewById(R.id.  distance_btn  );
         ColorButton     =   findViewById(R.id.  color_btn     );
@@ -135,7 +149,7 @@ public class weihu extends AppCompatActivity {
 
         // 设备是否开启判别
         if (devfd >= 0) {
-            timer.schedule(task, 0, 500);
+            timer.schedule(task, 0, 50);
         } else {
             devfd = -1;
             Toast.makeText(weihu.this,"Failed  to  open....",Toast.LENGTH_LONG).show();
@@ -156,7 +170,7 @@ public class weihu extends AppCompatActivity {
                 //串口写
                 int ret= com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str.getBytes());
                 //串口写
-                com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str.getBytes());
+                //com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str.getBytes());
                 if(ret>0){
                     DistanceText.setText("等待数据传输...");
                     state = 1;
@@ -181,7 +195,7 @@ public class weihu extends AppCompatActivity {
                 //串口写
                 int ret= com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str.getBytes());
                 //串口写
-                com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str.getBytes());
+                //com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str.getBytes());
                 if(ret>0){
                     ColorText.setText("等待数据传输...");
                     state = 2;
@@ -210,7 +224,7 @@ public class weihu extends AppCompatActivity {
                 //串口写
                 com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str .getBytes());
                 //串口写
-                com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str.getBytes());
+                //com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str.getBytes());
             }
         });
 
@@ -230,7 +244,7 @@ public class weihu extends AppCompatActivity {
                 //串口写
                 com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str .getBytes());
                 //串口写
-                com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str.getBytes());
+                //com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str.getBytes());
             }
         });
 
@@ -250,7 +264,7 @@ public class weihu extends AppCompatActivity {
                 //串口写
                 com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str .getBytes());
                 //串口写
-                com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str.getBytes());
+                //com.friendlyarm.FriendlyThings.HardwareControler.write(devfd, str.getBytes());
             }
         });
     }

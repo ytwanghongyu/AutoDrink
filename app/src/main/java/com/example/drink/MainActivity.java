@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                                 //串口写c 详见编码.pdf
                                 HardwareControler.write(devfd, str.getBytes());
                                 //串口写c 详见编码.pdf
-                                HardwareControler.write(devfd, str.getBytes());
+                                //HardwareControler.write(devfd, str.getBytes());
                                 String ChoosingText = "请选择饮料";
                                 Locked = 0;
                                 ChoseText.setText(ChoosingText);
@@ -108,10 +108,27 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    public static MainActivity instance = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        if(color.instance!=null){
+            color.instance.finish();
+        }
+        if(login.instance!=null){
+            login.instance.finish();
+        }
+        if(warning.instance!=null){
+            warning.instance.finish();
+        }
+        if(weihu.instance!=null){
+            weihu.instance.finish();
+        }
+
 
         //串口开启
         devfd = HardwareControler.openSerialPort( devName, speed, dataBits, stopBits );
@@ -175,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
                     //串口写1
                     HardwareControler.write(devfd, str.getBytes());
                     //串口写1
-                    HardwareControler.write(devfd, str.getBytes());
+                    //HardwareControler.write(devfd, str.getBytes());
 
                     Intent intent = new Intent(MainActivity.this, color.class);
                     startActivity(intent);
@@ -202,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
                     //串口写2
                     HardwareControler.write(devfd,str .getBytes());
                     //串口写2
-                    HardwareControler.write(devfd,str .getBytes());
+                    //HardwareControler.write(devfd,str .getBytes());
 
                     Intent intent = new Intent(MainActivity.this, color.class);
                     startActivity(intent);
@@ -230,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
                     //串口写3
                     HardwareControler.write(devfd, str.getBytes());
                     //串口写3
-                    HardwareControler.write(devfd, str.getBytes());
+                    //HardwareControler.write(devfd, str.getBytes());
 
                     Intent intent = new Intent(MainActivity.this, color.class);
                     startActivity(intent);
