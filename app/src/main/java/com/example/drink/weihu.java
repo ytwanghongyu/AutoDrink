@@ -149,7 +149,7 @@ public class weihu extends AppCompatActivity {
 
         // 设备是否开启判别
         if (devfd >= 0) {
-            timer.schedule(task, 0, 50);
+            timer.schedule(task, 0, 500);
         } else {
             devfd = -1;
             Toast.makeText(weihu.this,"Failed  to  open....",Toast.LENGTH_LONG).show();
