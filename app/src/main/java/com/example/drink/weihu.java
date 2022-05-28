@@ -38,7 +38,6 @@ public class weihu extends AppCompatActivity {
     private byte[] buf = new byte[BUFSIZE];
 
     private Timer timer = new Timer();
-
     private TimerTask task = new TimerTask() {
         public void run() {
             Message message = new Message();
